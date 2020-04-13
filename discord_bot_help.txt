@@ -1,0 +1,31 @@
+**BOT FUNCTIONS!!!**
+
+**Display Members:**
+
+This will dispaly a list of the users who are currently in this channel.
+
+    `!lucasbot display members`
+
+**Echo:**
+
+This will echo back message you input.
+
+    `!lucasbot echo [message to be echoed]`
+
+**Slap:**
+
+This will slap the user you specify. You can either type in their name without their ID or you can use a mention. You can slap multiple people.
+
+    `!lucasbot slap [person to be slapped]`
+
+**Weather:**
+
+This will tell you the current weather in the zipcode you specify:
+
+    `!lucasbot weather [zipcode]`
+
+**Reddit Comment Search:**
+
+This command will begin a prompt asking where/what/how you want to search for comments on Reddit. Follow the prompts and read the instructions:
+
+    `!lucasbot reddit comment search`
