@@ -7,12 +7,13 @@ from discord.ext import commands
 # ,owner_id='658080668886237194'
 from config import invocation
 bot = commands.Bot(command_prefix=invocation)
-
+repoLink = "https://github.com/kyxaa/spellbook/"
 import voiceAudio
 import voiceMoveMembers
 import fuckWithPeople
 import dndSpells
 import diceRolling
+# import helpModule
 
 load_dotenv()
 discord_token = os.getenv("DISCORD_TOKEN")
@@ -41,9 +42,12 @@ async def on_ready():
 
     print(df.to_string(index=False))
 
-    gitStatus = discord.Game(name="https://github.com/kyxaa/spellbook/")
+    gitStatus = discord.Game(repoLink)
     await bot.change_presence(activity=gitStatus)
 
+@bot.command()
+async def readme(ctx):
+    await ctx.send(f"The README for this bot can be found here: {repoLink}")
 
 diceRolling.setup(bot)
 voiceAudio.setup(bot)
