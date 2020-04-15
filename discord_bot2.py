@@ -13,6 +13,7 @@ import voiceMoveMembers
 import fuckWithPeople
 import dndSpells
 import diceRolling
+import guildSpecific
 # import helpModule
 
 load_dotenv()
@@ -28,7 +29,7 @@ async def on_ready():
         "Total Memebers":[],
         "Members Online":[],
     }
-    
+
     for guild in bot.guilds:
         membersOnline = 0
         guildsDisplay["Guild Name"].append(guild.name)
@@ -37,7 +38,7 @@ async def on_ready():
             if member.status.name == "online":
                 membersOnline += 1
         guildsDisplay["Members Online"].append(membersOnline)
-    
+
     df = pd.DataFrame(guildsDisplay)
 
     print(df.to_string(index=False))
@@ -54,4 +55,5 @@ voiceAudio.setup(bot)
 voiceMoveMembers.setup(bot)
 fuckWithPeople.setup(bot)
 dndSpells.setup(bot)
+guildSpecific.setup(bot)
 bot.run(discord_token)
