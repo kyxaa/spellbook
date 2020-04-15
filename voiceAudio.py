@@ -52,7 +52,7 @@ class voiceAudio(commands.Cog):
     def __init__(self,bot):
         self.bot = bot
         self.dndMusic = {
-            "roadMusic":"https://www.youtube.com/watch?v=6Em9tLXbhfo",
+            "forestAmb1":"https://www.youtube.com/watch?v=6Em9tLXbhfo",
             "warAmb":"https://www.youtube.com/watch?v=0rl7AatkjfA",
             "battleMusic":"https://www.youtube.com/watch?v=w0sUw735gRw",
             "battleMusic1":"https://www.youtube.com/watch?v=4szfmKTFoXA",
@@ -71,7 +71,10 @@ class voiceAudio(commands.Cog):
             "rainAmb":"https://www.youtube.com/watch?v=KSSpVMIgN2Y",
             "townAmb":"https://www.youtube.com/watch?v=NeOg8iCFfTA",
             "fantasyMusic":"https://www.youtube.com/watch?v=4bhceZgdWFM",
-            "celticMusic":"https://www.youtube.com/watch?v=b8jyxJaqovk"
+            "celticMusic":"https://www.youtube.com/watch?v=b8jyxJaqovk",
+            "eerieMusic":"https://www.youtube.com/watch?v=Z6ylGHfLrdI",
+            "forestAmb":"https://www.youtube.com/watch?v=xNN7iTA57jM",
+            "cataAmb":"https://www.youtube.com/watch?v=WPpVMmTt74Q"
         }
 
 
@@ -103,7 +106,7 @@ class voiceAudio(commands.Cog):
                 voiceClient.play(source)
             else:
                 await ctx.send("You aren't in a voice channel.")
-    
+
     @commands.command()
     async def playStream(self, ctx, url):
         if ctx.author.id == 158058710760030219:
@@ -145,7 +148,7 @@ class voiceAudio(commands.Cog):
                     await ctx.send("There isn't anything playing.")
 
             else:
-                await ctx.send("You aren't in a voice channel.")    
+                await ctx.send("You aren't in a voice channel.")
 
     @commands.command()
     async def pause(self, ctx):
@@ -165,7 +168,7 @@ class voiceAudio(commands.Cog):
                 else:
                     await ctx.send("There isn't anything playing.")
             else:
-                await ctx.send("You aren't in a voice channel.")   
+                await ctx.send("You aren't in a voice channel.")
 
     @commands.command()
     async def resume(self, ctx):
@@ -199,7 +202,7 @@ class voiceAudio(commands.Cog):
                 else:
                     await ctx.send("There isn't anything playing")
             else:
-                await ctx.send("You aren't in a voice channel.")   
+                await ctx.send("You aren't in a voice channel.")
 
 def setup(bot):
     bot.add_cog(voiceAudio(bot))
