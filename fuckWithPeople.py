@@ -125,6 +125,10 @@ class fuckWithPeople(commands.Cog):
         #         # for animatedEmoji in animatedEmojis:
         #         #     await message.add_reaction(animatedEmoji)
 
+    @commands.command()
+    async def whoDoWeHate(self,ctx):
+        await ctx.send("Eric Richards...Fuck that guy.")
+
     @commands.Cog.listener()
     async def on_raw_reaction_add(self,payload):
         if not payload.user_id == self.bot.user.id:

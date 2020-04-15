@@ -103,6 +103,28 @@ class voiceAudio(commands.Cog):
                 voiceClient.play(source)
             else:
                 await ctx.send("You aren't in a voice channel.")
+    
+    @commands.command()
+    async def playStream(self, ctx, url):
+        if ctx.author.id == 158058710760030219:
+            if hasattr(ctx.author.voice,"channel"):
+                if not ctx._state.voice_clients == []:
+                    for voice_client in ctx._state.voice_clients:
+                        if voice_client.channel == ctx.author.voice.channel:
+                            voiceClient = voice_client
+                            break
+                    if not "voiceClient" in locals():
+                        voiceClient = await ctx.author.voice.channel.connect()
+                else:
+                    voiceClient = await ctx.author.voice.channel.connect()
+                if url in self.dndMusic:
+                    url = self.dndMusic[url]
+                source = await YTDLSource.from_url(url,stream=True)
+                if voiceClient.is_playing():
+                    voiceClient.stop()
+                voiceClient.play(source)
+            else:
+                await ctx.send("You aren't in a voice channel.")
 
     @commands.command()
     async def stop(self, ctx):
