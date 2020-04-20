@@ -6,6 +6,81 @@ import re
 import pandas as pd
 import fuckWithPeople
 import loggingAndErrors
+import os
+import collections
+import functools
+import math
+
+
+
+class diceRollStats():
+    def __init__(self,numOfDice,typeOfDice,drop_highest,drop_lowest,rollStats):
+        self.numOfDice = numOfDice
+        self.typeOfDice = typeOfDice
+        self.drop_highest = drop_highest
+        self.drop_lowest = drop_lowest
+        self.rollStats = rollStats
+
+    @functools.lru_cache(maxsize=None)
+    def binomial(self,n, k):
+        return math.factorial(n) // (math.factorial(k) * math.factorial(n - k))
+
+    @functools.lru_cache(maxsize=None)
+    def outcomes(self,count, sides, drop_highest, drop_lowest):
+        d = collections.Counter()
+        if count == 0:
+            d[0] = 1
+        elif sides == 0:
+            pass
+        else:
+            for count_showing_max in range(count + 1):  # 0..count
+                d1 = self.outcomes(self,count - count_showing_max, sides - 1,
+                            max(drop_highest - count_showing_max, 0),
+                            drop_lowest)
+                count_showing_max_not_dropped = max(
+                    min(count_showing_max - drop_highest,
+                        count - drop_highest - drop_lowest), 0)
+                sum_showing_max = count_showing_max_not_dropped * sides
+                multiplier = self.binomial(self,count, count_showing_max)
+                for k, v in d1.items():
+                    d[sum_showing_max + k] += multiplier * v
+        return d
+
+    @classmethod
+    def get_outcomes(self,count, sides, drop_highest, drop_lowest):
+        self.rollStats = self.outcomes(self,count, sides, drop_highest, drop_lowest)
+
+
+
+# def produceRollStats(*args):
+#     d = outcomes(*args)
+#     denominator = sum(d.values()) / 100
+#     for k, v in sorted(d.items()):
+#         print(k, v / denominator)
+def mostLikelyRoll(numOfDice,diceType,drop_highest,drop_lowest):
+    if diceType > 100:
+        return "Error"
+    elif diceType > 20 and numOfDice > 15:
+        return "Error"
+    elif diceType > 12 and numOfDice > 50:
+        return "Error"
+    elif diceType > 10 and numOfDice > 75:
+        return "Error"
+    elif diceType > 8 and numOfDice > 100:
+        return "Error"
+    elif diceType > 6 and numOfDice > 150:
+        return "Error"
+    elif diceType > 4 and numOfDice > 200:
+        return "Error"
+    if not numOfDice == 1:
+        diceRollStats.get_outcomes(numOfDice,diceType,drop_highest,drop_lowest)
+        if (numOfDice % 2) == 0:
+            return str(diceRollStats.rollStats.most_common(1)[0][0])
+        else:
+            retVal = diceRollStats.rollStats.most_common(2)
+            return f"{retVal[0][0]} or {retVal[1][0]}"
+    else:
+        return "NA"
 
 class diceRolling:
 
@@ -14,8 +89,9 @@ class diceRolling:
         inputs = arg.split("+")
         resultsDict = {
             "Input":[],
+            "AVG Roll":[],
             "Rolls":[],
-            "Total":[],
+            "Total":[]
     }
         if self.validateInput(inputs):
             for input in inputs:
@@ -39,9 +115,11 @@ class diceRolling:
                         random.seed()
                         rollResults.append(random.randint(1,typeOfDice))
                         i += 1
+                    resultsDict["AVG Roll"].append(mostLikelyRoll(int(numOfDice),int(typeOfDice),0,0))
                     resultsDict["Rolls"].append(rollResults)
                     resultsDict["Total"].append(sum(rollResults))
                 for modifier in modifiers:
+                    resultsDict["AVG Roll"].append("NA")
                     resultsDict["Input"].append(modifier)
                     resultsDict["Rolls"].append([int(modifier)])
                     resultsDict["Total"].append(int(modifier))
@@ -50,7 +128,7 @@ class diceRolling:
     @classmethod
     def validateInput(self, splitList: list):
         for roll in splitList:
-            match = re.match("^(-?[0-9]+)?(d([0-9]+))?(-[0-9]+)?$",roll)
+            match = re.match("^(-?[0-9]{1,5})?(d([0-9]+))?(-[0-9]+)?$",roll.lower())
             if match is None:
                 return False
         return True
@@ -65,7 +143,7 @@ class diceRolling:
                 totalStr = fuckWithPeople.replaceCharactersWithEmojis(str(total))
             return f"The result of your roll is:\n```{df.to_string(index=False)}```\nWhich brings us to a grand total of {totalStr}!!!"
         else:
-            return "The input for this roll wasn't correct. Please try again."
+            return "The input for this roll wasn't correct or you input too large of a roll. Please try again."
 
     @classmethod
     def rollDisplay(self, input: str):
@@ -83,6 +161,7 @@ class diceRollingCog(commands.Cog):
         responseList = [response]
         await ctx.send(response)
         loggingAndErrors.writeToLogs(ctx,responseList)
+
 
 def setup(bot):
     bot.add_cog(diceRollingCog(bot))
