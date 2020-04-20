@@ -14,8 +14,11 @@ def displaySpell(spellName):
     #     table = conn.execute(f"select * from spells where spellClasses like '%{inputclass}%' and spellName = '{inputSpellName}' order by spellLevel,spellName")
     # else:
     #     table = conn.execute(f"select * from spells where spellClasses like '%{inputclass}%' order by spellLevel,spellName")
-    spellName = spellName.title().replace("'S","'s")
-    table = conn.execute("select * from spells where spellName like? LIMIT 1", (spellName,))
+    try:
+        table = conn.execute("select * from spells where rowid =? LIMIT 1", (int(spellName),))
+    except:
+        spellName = spellName.title().replace("'S","'s")
+        table = conn.execute("select * from spells where spellName like? LIMIT 1", (spellName,))
     # table = conn.execute(f"select * from spells where spellName = '{spellName.title()}' LIMIT 1")
 
 
@@ -111,9 +114,9 @@ def displaySpellList(spellClass):
             subclass = ""
             # print(f"{len(spellList['spellLevel'])}|{len(spellList['spellName'])}|{len(spellList['availableViaSubclass'])}")
             if row["spellLevel"] == 0:
-                spellList["spellLevel"].append("Cantrip")            
+                spellList["spellLevel"].append("Cantrip")
             else:
-                spellList["spellLevel"].append(str(row["spellLevel"])) 
+                spellList["spellLevel"].append(str(row["spellLevel"]))
             spellList["spellName"].append(row["spellName"])
             if row["spellArchetype"] is not None:
                 if spellClass.title() == "Cleric":
@@ -133,7 +136,7 @@ def displaySpellList(spellClass):
                     spellList["availableViaSubclass"].append("")
             else:
                 spellList["availableViaSubclass"].append("")
-    if len(spellList["spellName"]) > 0:    
+    if len(spellList["spellName"]) > 0:
         spellList["spellLevel"].insert(0,"Level")
         spellList["spellName"].insert(0,"Name")
         spellList["availableViaSubclass"].insert(0,"Via SubClass")
