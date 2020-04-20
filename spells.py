@@ -7,26 +7,16 @@ from discord.ext import commands
 def displaySpell(spellName):
     conn = sqlite3.connect('DungeonsNDragons.db')
     conn.row_factory = sqlite3.Row
-    # inputclass = "Wizard"
-    # inputSpellName = "Polymorph"
-    # spellName = spellName.replace("'","''")
-    # if inputSpellName:
-    #     table = conn.execute(f"select * from spells where spellClasses like '%{inputclass}%' and spellName = '{inputSpellName}' order by spellLevel,spellName")
-    # else:
-    #     table = conn.execute(f"select * from spells where spellClasses like '%{inputclass}%' order by spellLevel,spellName")
     try:
-        table = conn.execute("select * from spells where rowid =? LIMIT 1", (int(spellName),))
+        table = conn.execute("select rowid,* from spells where rowid =? LIMIT 1", (int(spellName),))
     except:
         spellName = spellName.title().replace("'S","'s")
-        table = conn.execute("select * from spells where spellName like? LIMIT 1", (spellName,))
-    # table = conn.execute(f"select * from spells where spellName = '{spellName.title()}' LIMIT 1")
-
+        table = conn.execute("select rowid,* from spells where spellName like? LIMIT 1", (spellName,))
 
     for row in table:
         ritualCaster = False
-        # if table.rowcount == 1:
         formattedspellName = row['spellName'].title().replace("'S","'s")
-        retVal = f"__**{formattedspellName}**__\n"
+        retVal = f"__**{formattedspellName}**__ ({row['rowid']})\n"
 
         if row['spellLevel'] == 0:
             spellLeveltext = 'Cantrip'
@@ -89,7 +79,6 @@ def displaySpellList(spellClass):
     if spellClass.title() in "Sorcerer|Warlock|Wizard|Cleric|Paladin|Bard|Ranger|Druid":
         infoFetched = True
         table = conn.execute("select * from spells where spellClasses like? or spellArchetype like? order by spellLevel,spellName", (f"%{spellClass}%",f"%{spellClass}%"))
-    # retVal = f"__**{spellClass.title()}'s Spell List**__\n\n"
     retVal = ""
 
     spellList = {
@@ -97,22 +86,10 @@ def displaySpellList(spellClass):
         "spellName":[],
         "availableViaSubclass":[],
     }
-    # for member in guild.members:
-    #     member_list["Name"].append(member.name)
-    #     member_list["Status"].append(str(member.status))
-    #     if not member.activities:
-    #         member_list["Activity"].append('')
-    #     else:
-    #         member_list["Activity"].append(member.activity.name)
-    #     member_list["ID"].append(member.id)
-
-    # df = pd.DataFrame(member_list)
-    # return df.to_string(index=False)
 
     if infoFetched:
         for row in table:
             subclass = ""
-            # print(f"{len(spellList['spellLevel'])}|{len(spellList['spellName'])}|{len(spellList['availableViaSubclass'])}")
             if row["spellLevel"] == 0:
                 spellList["spellLevel"].append("Cantrip")
             else:
@@ -150,8 +127,3 @@ def displaySpellList(spellClass):
             i += 1
         retVal = "\n".join(retValArray)
         return retVal
-
-
-
-
-# print(table)
