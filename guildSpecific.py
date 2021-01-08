@@ -22,5 +22,13 @@ class dsNDs(commands.Cog):
         if ctx.guild.id == self.guildId:
             await miscFunctions.displayImage(ctx,"swordCoast.png",messageText="Here is your map: ")
 
+    @commands.command()
+    async def display_members(self,ctx:commands.Context):
+        if ctx.guild.id == self.guildId:
+            member_list = "Members of this guild:"
+            for member in ctx.guild.members:
+                member_list += f"\n{member.name}    {member.id}"
+            await ctx.send(content=member_list)
+
 def setup(bot):
     bot.add_cog(dsNDs(bot))

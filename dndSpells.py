@@ -2,7 +2,7 @@ import discord
 from discord.ext import commands
 import spells
 import re
-import fuckWithPeople
+import messWithPeople
 import loggingAndErrors
 
 def convertLongResponseToArray(response):
@@ -58,7 +58,7 @@ class dndSpells(commands.Cog):
                 for response in responseList:
                     await ctx.send(response)
         if not responseList == []:
-            for emoji in fuckWithPeople.randomAnimatedEmoji(ctx,5):
+            for emoji in messWithPeople.randomAnimatedEmoji(ctx,5):
                 await ctx.message.add_reaction(emoji)
             loggingAndErrors.writeToLogs(ctx,responseList)
 
@@ -87,7 +87,7 @@ class dndSpells(commands.Cog):
                 for response in responseList:
                     await ctx.send(response)
             if not responseList == []:
-                for emoji in fuckWithPeople.randomAnimatedEmoji(ctx,5):
+                for emoji in messWithPeople.randomAnimatedEmoji(ctx,5):
                     await ctx.message.add_reaction(emoji)
                 loggingAndErrors.writeToLogs(ctx,responseList)
 

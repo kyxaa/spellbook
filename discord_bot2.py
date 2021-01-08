@@ -10,7 +10,7 @@ bot = commands.Bot(command_prefix=invocation)
 repoLink = "https://github.com/kyxaa/spellbook/"
 import voiceAudio
 import voiceMoveMembers
-import fuckWithPeople
+import messWithPeople
 import dndSpells
 import diceRolling
 import guildSpecific
@@ -53,7 +53,7 @@ async def readme(ctx):
 diceRolling.setup(bot)
 voiceAudio.setup(bot)
 voiceMoveMembers.setup(bot)
-fuckWithPeople.setup(bot)
+messWithPeople.setup(bot)
 dndSpells.setup(bot)
 guildSpecific.setup(bot)
 bot.run(discord_token)
