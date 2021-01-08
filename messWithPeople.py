@@ -99,7 +99,7 @@ def replaceCharactersWithEmojis(input: str):
             
 
 
-class fuckWithPeople(commands.Cog):
+class messWithPeople(commands.Cog):
     def __init__(self,bot):
         self.bot = bot
 
@@ -169,4 +169,4 @@ class fuckWithPeople(commands.Cog):
 
 
 def setup(bot):
-    bot.add_cog(fuckWithPeople(bot))
+    bot.add_cog(messWithPeople(bot))

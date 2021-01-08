@@ -4,7 +4,7 @@ import math
 import random
 import re
 import pandas as pd
-import fuckWithPeople
+import messWithPeople
 import loggingAndErrors
 import os
 import collections
@@ -138,9 +138,9 @@ class diceRolling:
             df = pd.DataFrame(rollResults)
             total = sum(rollResults['Total'])
             if total < 0:
-                totalStr = f"**NEGATIVE** {fuckWithPeople.replaceCharactersWithEmojis(str(total*-1))}"
+                totalStr = f"**NEGATIVE** {messWithPeople.replaceCharactersWithEmojis(str(total*-1))}"
             else:
-                totalStr = fuckWithPeople.replaceCharactersWithEmojis(str(total))
+                totalStr = messWithPeople.replaceCharactersWithEmojis(str(total))
             return f"The result of your roll is:\n```{df.to_string(index=False)}```\nWhich brings us to a grand total of {totalStr}!!!"
         else:
             return "The input for this roll wasn't correct or you input too large of a roll. Please try again."
